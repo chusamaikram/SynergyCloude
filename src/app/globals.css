@@ -1,26 +1,96 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+    --font-sans: var(--font-dm-sans);
+    --font-display: var(--font-montserrat);
+    --font-roboto: var(--font-roboto);
+    --font-poppins: var(--font-poppins);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+    background: white;
+    font-family: var(--font-sans);
+    box-sizing: border-box;
+    margin: 0 auto;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.animate-fadeIn {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.container {
+    max-width: 1666px;
+    padding-left: 80px;
+    padding-right: 80px;
+    margin: 0 auto;
+}
+
+@keyframes blink {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
+    }
+}
+
+.animate-blink {
+    animation: blink 0.8s step-end infinite;
+    vertical-align: middle;
+}
+
+@keyframes marquee {
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(-50%);
+    }
+}
+
+.animate-marquee {
+    animation: marquee 30s linear infinite;
+}
+
+
+
+@media(max-width:575px) {
+    .container {
+        max-width: 650px;
+        padding-left: 16px;
+        padding-right: 16px;
+        margin: 0
+    }
+
+    body {
+        margin: 0
+    }
+}
+
+@media(max-width:1015px) {
+    .container {
+        max-width: 1280px;
+        padding-left: 40px;
+        padding-right: 40px;
+        margin: 0
+    }
+
+    body {
+        margin: 0
+    }
 }
