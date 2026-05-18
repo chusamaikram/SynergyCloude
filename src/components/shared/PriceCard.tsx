@@ -24,7 +24,7 @@ export default function PriceCard({ isPopular, logo, plan, users, desc, price, b
         <div className={`relative h-full py-7 sm:py-[47px] group px-7 sm:px-12.5 rounded-[28px] ${styles.card} transition-colors duration-300 border border-[#EFF0F6] shadow-[0_2.353px_14.117px_0_rgba(20,20,43,0.08)]`}>
 
             {isPopular && (
-                <div className="absolute top-5 sm:top-9.5 right-5 sm:right-9 py-2 sm:py-3.5 px-4 sm:px-7 rounded-md sm:rounded-xl bg-[rgba(255,255,255,0.20)] backdrop-blur-md text-white text-base">
+                <div className="absolute top-5 sm:top-7.5 right-5 sm:right-7 py-2 sm:py-3.5 px-4 sm:px-7 rounded-md sm:rounded-xl bg-[rgba(255,255,255,0.20)] backdrop-blur-md text-white text-base">
                     Popular
                 </div>
             )}

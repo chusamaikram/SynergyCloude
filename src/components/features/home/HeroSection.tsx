@@ -18,7 +18,7 @@ export default function HeroSection() {
                 </div>
 
 
-                <div className="mt-11.5 md:mt-23.5 relative ">
+                <div className="mt-11.5 md:mt-23.5 relative w-full ">
                     <div className="absolute -top-18 md:-top-60 -left-20 -right-4 md:-right-16">
                         <Image
                             src={herobg}
@@ -26,7 +26,7 @@ export default function HeroSection() {
                         />
 
                     </div>
-                    <div className="relative z-10 overflow-hidden flex items-center justify-center mx-auto ">
+                    <div className="relative z-10 overflow-hidden flex items-center justify-center w-full ">
                         <Image
                             src={Screen}
                             alt="screen mockup"

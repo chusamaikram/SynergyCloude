@@ -71,7 +71,7 @@ export default function Header() {
     return (
         <header className="sticky top-0 z-999 bg-white shadow-[0_2px_16px_0_rgba(15,23,42,0.06)]">
             <div className="container">
-                <nav className="flex items-center justify-between gap-[113px] py-4.5">
+                <nav className="flex items-center justify-between py-4.5">
 
                     {/* Logo */}
 

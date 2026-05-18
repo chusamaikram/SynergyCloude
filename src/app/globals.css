@@ -13,6 +13,8 @@ body {
     font-family: var(--font-sans);
     box-sizing: border-box;
     margin: 0 auto;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
 }
 
 @keyframes fadeIn {
@@ -30,10 +32,19 @@ body {
 }
 
 .container {
+    width: 100%;
     max-width: 1666px;
-    padding-left: 80px;
-    padding-right: 80px;
+    padding-left: clamp(16px, 5vw, 80px);
+    padding-right: clamp(16px, 5vw, 80px);
     margin: 0 auto;
+    box-sizing: border-box;
+}
+
+@media (max-width: 575px) {
+    .container {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
 }
 
 @keyframes blink {
@@ -65,32 +76,4 @@ body {
 
 .animate-marquee {
     animation: marquee 30s linear infinite;
-}
-
-
-
-@media(max-width:575px) {
-    .container {
-        max-width: 650px;
-        padding-left: 16px;
-        padding-right: 16px;
-        margin: 0
-    }
-
-    body {
-        margin: 0
-    }
-}
-
-@media(max-width:1015px) {
-    .container {
-        max-width: 1280px;
-        padding-left: 40px;
-        padding-right: 40px;
-        margin: 0
-    }
-
-    body {
-        margin: 0
-    }
 }
