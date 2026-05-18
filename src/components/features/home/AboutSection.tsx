@@ -1,6 +1,6 @@
 
 import SectionHeading from "@/components/shared/SectionHeading"
-import HoveredContent from "../HoverEffect"
+import HoveredContent from "./HoverEffect"
 
 export default function AboutSection() {
 

@@ -1,178 +1,180 @@
 # SynergyCloud
 
-A Next.js 16 marketing site built with React 19, Tailwind CSS v4, and TypeScript.
+A responsive marketing landing page for SynergyCloud — a team collaboration platform. Built with Next.js 16, React 19, Tailwind CSS v4, and TypeScript.
+
+---
+
+## Tech Stack
+
+| Technology | Version | Purpose |
+|---|---|---|
+| Next.js | 16.2.6 | React framework, routing, font optimization |
+| React | 19.2.4 | UI library |
+| TypeScript | 5 | Static typing |
+| Tailwind CSS | 4 | Utility-first styling |
+| Lucide React | 1.14.0 | Icon library |
+| React Hook Form | 7.76.0 | Form state management |
+| Yup | 1.7.1 | Schema-based form validation |
+| @hookform/resolvers | 5.2.2 | Bridge between RHF and Yup |
+
+---
+
+## Getting Started
+
+```bash
+npm install
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+### Other Scripts
+
+```bash
+npm run build   # production build
+npm run start   # start production server
+npm run lint    # run ESLint
+```
+
+---
+
+## Folder Structure
+
+```
+synergycloud/
+├── public/                     # Static assets served at root
+│   └── *.svg
+│
+├── src/
+│   ├── app/                    # Next.js App Router
+│   │   ├── favicon.ico
+│   │   ├── globals.css         # Global styles, Tailwind imports, @theme tokens, keyframes
+│   │   ├── layout.tsx          # Root layout — fonts, metadata, Header
+│   │   └── page.tsx            # Home route — renders HomePage
+│   │
+│   ├── assets/                 # Static media used in components
+│   │   ├── gifs/
+│   │   │   └── form-gif.gif
+│   │   ├── images/
+│   │   │   ├── about1.png
+│   │   │   ├── about2.png
+│   │   │   ├── hero-bg.png
+│   │   │   ├── logo.svg
+│   │   │   ├── user1–5.svg
+│   │   │   └── ...
+│   │   └── CustomIcons.tsx     # Inline SVG icon components (plan logos, contact icons, etc.)
+│   │
+│   ├── components/
+│   │   ├── features/           # Page-specific section components
+│   │   │   └── home/
+│   │   │       ├── index.tsx           # Home page composition — assembles all sections
+│   │   │       ├── HeroSection.tsx     # Hero banner
+│   │   │       ├── AboutSection.tsx    # About Us section
+│   │   │       ├── HoverEffect.tsx     # Interactive image/text swap panel (desktop hover)
+│   │   │       ├── PricingSection.tsx  # Pricing cards section
+│   │   │       ├── Testimonialas.tsx   # Auto-scrolling testimonials slider
+│   │   │       ├── SignupSection.tsx   # Signup form with validation
+│   │   │       └── ContactUs.tsx       # Contact form with validation
+│   │   │
+│   │   └── shared/             # Reusable components used across sections
+│   │       ├── Button.tsx          # Polymorphic button — renders as <button> or <Link>
+│   │       ├── Header.tsx          # Sticky responsive header with mobile drawer
+│   │       ├── Footer.tsx          # Site footer
+│   │       ├── FormInput.tsx       # Reusable input with label, error display, peer-focus styles
+│   │       ├── PriceCard.tsx       # Individual pricing card with hover state
+│   │       ├── TestiminialsCard.tsx # Individual testimonial card
+│   │       ├── SectionHeading.tsx  # Shared section heading typography
+│   │       └── HeroHeading.tsx     # Hero-specific heading component
+│   │
+│   └── lib/
+│       └── schemas.ts          # All Yup validation schemas and inferred TypeScript types
+│
+├── next.config.ts
+├── tailwind.config / postcss.config.mjs
+├── tsconfig.json
+└── package.json
+```
+
+---
+
+## Pages & Sections
+
+The home page (`src/app/page.tsx`) renders `HomePage` from `src/components/features/home/index.tsx`, which composes the following sections in order:
+
+1. **HeroSection** — full-width banner with headline and CTA
+2. **AboutSection** — two-column layout with interactive image panel (hover effect on desktop)
+3. **PricingSection** — three pricing cards with hover state transitions
+4. **Testimonials** — infinite auto-scrolling card slider, pauses on hover
+5. **SignupSection** — signup form with name, email, and password fields
+6. **ContactUs** — contact form with info panel and message textarea
+7. **Footer**
+
+---
+
+## Font Setup
+
+Fonts are loaded via `next/font/google` in `layout.tsx` and exposed as CSS variables:
+
+| Font | CSS Variable | Tailwind Class | Usage |
+|---|---|---|---|
+| DM Sans | `--font-dm-sans` | `font-sans` | Default body font |
+| Montserrat | `--font-montserrat` | `font-display` | Section headings |
+| Roboto | `--font-roboto` | `font-roboto` | Card text |
+| Poppins | `--font-poppins` | `font-poppins` | Contact section heading |
+
+All variables are registered in `globals.css` under `@theme inline` so Tailwind utility classes resolve to the self-hosted font.
 
 ---
 
 ## Form Validation
 
-### Libraries Used
+Two forms use shared validation — the **Signup** form and the **Contact Us** form.
 
-#### 1. `react-hook-form`
+### Libraries
 
-**Why:** React Hook Form is the industry standard for form state management in React. It uses uncontrolled inputs and a ref-based approach, which means it does not re-render the entire component on every keystroke — only the field that changed re-renders. This makes it significantly more performant than controlled form libraries like Formik, especially on forms with many fields.
+- **`react-hook-form`** — manages form state using uncontrolled inputs (ref-based). Does not re-render on every keystroke, making it more performant than controlled form approaches.
+- **`yup`** — defines validation rules as a schema object outside the component. Rules are declarative and chainable.
+- **`@hookform/resolvers`** — connects the Yup schema to `react-hook-form` via `yupResolver()`.
 
-Key benefits:
-- Minimal re-renders via uncontrolled inputs
-- Native `ref` forwarding support — works seamlessly with custom components using `forwardRef`
-- Built-in `formState` object exposes `errors`, `isSubmitting`, `isDirty`, and more
-- `handleSubmit` wrapper prevents submission if validation fails and calls `onSubmit` only with valid data
+### Schema File
 
-#### 2. `yup`
-
-**Why:** Yup is a schema-based validation library. Instead of writing validation logic inside components, you define the rules once as a schema object and reuse it anywhere. It integrates directly with `react-hook-form` via the `@hookform/resolvers` adapter.
-
-Key benefits:
-- Declarative, chainable API — rules read like plain English
-- Schema is defined outside the component — single source of truth
-- `yup.InferType<typeof schema>` automatically generates TypeScript types from the schema, keeping types and validation rules in sync with zero duplication
-- Supports async validation, conditional rules, and custom validators
-
-#### 3. `@hookform/resolvers`
-
-**Why:** This is the official bridge between `react-hook-form` and external validation libraries like Yup. It wraps the Yup schema in a resolver function that `react-hook-form` calls internally on every submission (and optionally on every change/blur).
-
-Usage:
-```ts
-useForm({ resolver: yupResolver(schema) })
-```
-
----
-
-### Architecture
-
-All validation schemas live in a single file:
-
-```
-src/lib/schemas.ts
-```
-
-This is the single source of truth for all form validation rules across the entire application. Both forms import their schema and their TypeScript types from this one file.
-
-```
-src/lib/schemas.ts              ← all Yup schemas + inferred TypeScript types
-src/components/shared/FormInput.tsx  ← reusable input component with error display
-src/components/features/home/SignupSection.tsx   ← uses signupSchema
-src/components/features/home/ContactUs.tsx       ← uses contactSchema
-```
-
----
-
-### Schemas
-
-#### Signup Schema (`signupSchema`)
-
-Used in: `SignupSection.tsx`
-
-| Field | Yup Methods | Rule |
-|-------|-------------|------|
-| `name` | `.string()`, `.min(2)`, `.required()` | Non-empty string, minimum 2 characters |
-| `email` | `.string()`, `.email()`, `.required()` | Valid email format, non-empty |
-| `password` | `.string()`, `.min(8)`, `.required()` | Non-empty string, minimum 8 characters |
+All schemas live in one place: `src/lib/schemas.ts`
 
 ```ts
-export const signupSchema = yup.object({
-    name: yup.string().min(2, "Name must be at least 2 characters").required("Full name is required"),
-    email: yup.string().email("Enter a valid email address").required("Email is required"),
-    password: yup.string().min(8, "Password must be at least 8 characters").required("Password is required"),
-})
-```
+// Signup — name, email, password
+export const signupSchema = yup.object({ ... })
+export type SignupFormData = yup.InferType<typeof signupSchema>
 
-#### Contact Schema (`contactSchema`)
-
-Used in: `ContactUs.tsx`
-
-| Field | Yup Methods | Rule |
-|-------|-------------|------|
-| `firstName` | `.string()`, `.min(2)`, `.required()` | Non-empty string, minimum 2 characters |
-| `lastName` | `.string()`, `.min(2)`, `.required()` | Non-empty string, minimum 2 characters |
-| `email` | `.string()`, `.email()`, `.required()` | Valid email format, non-empty |
-| `phone` | `.string()`, `.matches()`, `.required()` | Matches phone regex, non-empty |
-| `message` | `.string()`, `.min(10)`, `.required()` | Non-empty string, minimum 10 characters |
-
-```ts
-export const contactSchema = yup.object({
-    firstName: yup.string().min(2, "First name must be at least 2 characters").required("First name is required"),
-    lastName: yup.string().min(2, "Last name must be at least 2 characters").required("Last name is required"),
-    email: yup.string().email("Enter a valid email address").required("Email is required"),
-    phone: yup.string().matches(/^\+?[0-9\s\-()]{7,15}$/, "Enter a valid phone number").required("Phone number is required"),
-    message: yup.string().min(10, "Message must be at least 10 characters").required("Message is required"),
-})
-```
-
----
-
-### Yup Methods Reference
-
-| Method | What it does |
-|--------|-------------|
-| `.string()` | Declares the field must be a string type |
-| `.required(msg)` | Field cannot be empty or undefined. `msg` is shown if violated |
-| `.min(n, msg)` | String must be at least `n` characters long |
-| `.email(msg)` | String must match a valid email format (`user@domain.tld`) |
-| `.matches(regex, msg)` | String must match the provided regular expression |
-| `yup.InferType<T>` | TypeScript utility — derives a type from the schema so you never write types and validation rules separately |
-
----
-
-### TypeScript Integration
-
-Schemas export their inferred types:
-
-```ts
-export type SignupFormData  = yup.InferType<typeof signupSchema>
+// Contact — firstName, lastName, email, phone, message
+export const contactSchema = yup.object({ ... })
 export type ContactFormData = yup.InferType<typeof contactSchema>
 ```
 
-These types are passed directly to `useForm`:
+`yup.InferType` derives TypeScript types directly from the schema — types and validation rules are never written twice.
 
-```ts
-const { register, handleSubmit, formState: { errors } } = useForm<SignupFormData>({
-    resolver: yupResolver(signupSchema)
-})
-```
+### Yup Methods Used
 
-This gives full TypeScript autocomplete on `errors.name`, `errors.email`, etc., and ensures the `onSubmit` callback receives a fully typed, validated data object.
+| Method | Rule enforced |
+|---|---|
+| `.string()` | Field must be a string |
+| `.required(msg)` | Field cannot be empty |
+| `.min(n, msg)` | Minimum character length |
+| `.email(msg)` | Must be a valid email format |
+| `.matches(regex, msg)` | Must match a regular expression (used for phone number) |
 
----
-
-### Reusable `FormInput` Component
-
-`src/components/shared/FormInput.tsx` is built with `forwardRef` so `react-hook-form`'s `register()` can attach its internal ref to the underlying `<input>` element.
-
-```tsx
-const FormInput = forwardRef<HTMLInputElement, InputProps>(({ label, labelfor, error, ...rest }, ref) => (
-    <div className="...flex-col-reverse...">
-        <input ref={ref} id={labelfor} {...rest} className="peer ..." />
-        <label htmlFor={labelfor} className="...peer-focus:text-[#011C2A]">{label}</label>
-        {error && <span className="text-sm text-red-500">{error}</span>}
-    </div>
-))
-```
-
-**Why `forwardRef`:** `react-hook-form` needs a ref on the input to read its value without controlled state. Without `forwardRef`, the ref passed by `register()` would be lost and the field would not be tracked.
-
-**Why `flex-col-reverse` with input before label:** The Tailwind `peer-focus:` utility uses CSS sibling selectors, which only target elements that come *after* the `peer` element in the DOM. Since we want the label to respond to the input's focus state, the input must precede the label in HTML. `flex-col-reverse` restores the correct visual order (label on top, input below) without changing the DOM order.
-
-**Error display:** The `error` prop receives the message string from `react-hook-form`'s `errors` object (e.g. `errors.firstName?.message`) and renders it below the input in red when present.
-
----
-
-### How Validation Flows
+### How It Works
 
 ```
 User submits form
-       ↓
-handleSubmit() intercepts the event
-       ↓
-yupResolver runs the schema against form values
-       ↓
-  ┌─── Valid ───────────────────────────────┐
-  │                                         │
-  ↓                                         ↓
-onSubmit(data) called              errors object populated
-with typed, validated data         components re-render
-                                   showing error messages
+      ↓
+handleSubmit() intercepts — runs yupResolver
+      ↓
+Valid → onSubmit(data) called with typed, clean data
+Invalid → errors object populated, messages shown under each field
 ```
 
-Validation runs on submit by default. Errors clear field-by-field as the user corrects their input.
+Validation runs on submit by default. Error messages clear field-by-field as the user corrects their input. Submitted data is currently logged to the console (`console.log`) as a placeholder for API integration.
+
+### Reusable `FormInput` Component
+
+`FormInput` uses `forwardRef` so `react-hook-form`'s `register()` can attach its ref to the underlying input. It also implements a CSS-only label focus effect using Tailwind's `peer` / `peer-focus:` utilities — no JavaScript required for the label animation.
