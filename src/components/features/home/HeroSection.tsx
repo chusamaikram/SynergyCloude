@@ -9,7 +9,7 @@ export default function HeroSection() {
         <section id="hero" className="lg:py-[94px] md:min-h-screen">
             <div className="container">
 
-                <div className="mx-auto flex flex-col items-center gap-10">
+                <div className="mx-auto relative z-20 flex flex-col items-center gap-10">
                     <div className="mx-auto">
                         <HeroHeading />
                         <p className="text-center text-base lg:text-[21px] text-[#0F172A] leading-[160%] font-display">Empower Your Team to Communicate, Collaborate, and Create—All in One Place!</p>
